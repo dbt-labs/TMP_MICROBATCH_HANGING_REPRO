@@ -1,15 +1,24 @@
-Welcome to your new dbt project!
+# Setup
 
-### Using the starter project
+## Environment
+```bash
+$ python -m venv venv
+$ source venv/bin/activate
+$ pip install dbt-snowflake
+$ pip install -e ../path/to/dbt-core/core
+$ source venv/bin/activate
+```
 
-Try running the following commands:
-- dbt run
-- dbt test
+**Note**: It is recommended to have an up to date `dbt-core@main`
 
+## Profile
+Add a snowflake based `CORE_654` profile to your  `~/.dbt/profiles.yml`
 
-### Resources:
-- Learn more about dbt [in the docs](https://docs.getdbt.com/docs/introduction)
-- Check out [Discourse](https://discourse.getdbt.com/) for commonly asked questions and answers
-- Join the [chat](https://community.getdbt.com/) on Slack for live discussions and support
-- Find [dbt events](https://events.getdbt.com) near you
-- Check out [the blog](https://blog.getdbt.com/) for the latest news on dbt's development and best practices
+# Reproduction
+1. On branch `main` run `dbt run`
+2. `cp -r target old_state`
+3. Checkout branch `repro` via `git checkout repro`
+   1. you may need to first do a `git fetch origin repro`
+4. on branch `repro` run `dbt run --select="state:modified+" --threads=4 --state="old_state" --fail-fast`
+   1. can add `--debug` for extra details
+   2. should also repro with `--threads=1`
